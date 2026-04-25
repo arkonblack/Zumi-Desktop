@@ -1,0 +1,75 @@
+/* ══════════════════════════════
+   VARIABLES DE TEMA
+══════════════════════════════ */
+:root {
+  --expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Tema claro (default) */
+  --text:    #1D1D1F;
+  --text2:   #86868B;
+  --text3:   #A1A1A6;
+  --bg:      #F5F5F7;
+  --surface: #FFFFFF;
+  --surface2:#F2F2F7;
+  --border:  #EBEBEB;
+  --divider: #F0F0F5;
+
+  /* Color de acento principal */
+  --accent:  #0071E3;
+
+  /* Rojo de error — fijo en todos los temas */
+  --error:   #FF3B30;
+}
+
+/* Tema oscuro */
+html.dark {
+  color-scheme: dark;
+  --text:    #F2F2F7;
+  --text2:   #8E8E93;
+  --text3:   #636366;
+  --bg:      #1C1C1E;
+  --surface: #2C2C2E;
+  --surface2:#3A3A3C;
+  --border:  #3A3A3C;
+  --divider: #3A3A3C;
+}
+
+/* Tema Zumi (azul oscuro) */
+html.theme-zumi {
+  color-scheme: dark;
+  --text:    #F0F4F8;
+  --text2:   #A6B4C8;
+  --text3:   #7A8CA3;
+  --bg:      #0B1121;
+  --surface: #131E3A;
+  --surface2:#1A294C;
+  --border:  #23355E;
+  --divider: #1A294C;
+}
+
+/* ══════════════════════════════
+   VIEW TRANSITION (DARK MODE)
+══════════════════════════════ */
+::view-transition-group(root) {
+  animation-timing-function: var(--expo-out);
+}
+
+::view-transition-new(root) {
+  mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><filter id="blur"><feGaussianBlur stdDeviation="2"/></filter></defs><circle cx="0" cy="0" r="18" fill="white" filter="url(%23blur)"/></svg>') top left / 0 no-repeat;
+  mask-origin: content-box;
+  animation: scale 1s;
+  animation-fill-mode: both;
+  transform-origin: top left;
+}
+
+::view-transition-old(root),
+.dark::view-transition-old(root) {
+  animation: scale 1s;
+  animation-fill-mode: both;
+  transform-origin: top left;
+  z-index: -1;
+}
+
+@keyframes scale {
+  to { mask-size: 350vmax; }
+}

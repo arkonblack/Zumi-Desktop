@@ -1,0 +1,104 @@
+.notas-view { flex: 1; display: flex; justify-content: center; align-items: flex-start; padding: 28px 20px 100px; overflow-y: auto; }
+.notas-wrap { width: 100%; max-width: 520px; }
+
+/* Header */
+.notas-header { margin-bottom: 18px; display: flex; align-items: flex-end; justify-content: space-between; }
+.notas-count  { font-size: 11px; color: var(--text3); font-weight: 600; padding-bottom: 3px; }
+
+/* Dashboard inline */
+.nota-dashboard {
+  background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px;
+  padding: 14px 16px; margin-bottom: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.nota-dashboard.expanded { border-color: #ADCFF7; box-shadow: 0 4px 24px rgba(0,0,0,0.1); }
+.dash-textarea {
+  width: 100%; background: transparent; border: none; outline: none; resize: none;
+  font-family: inherit; font-size: 14px; color: var(--text); line-height: 1.5; padding: 0; overflow: hidden;
+}
+.dash-textarea::placeholder { color: var(--text3); }
+.dash-bottom { display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--divider); padding-top: 10px; margin-top: 10px; }
+.dash-bottom.hidden { display: none; }
+.dash-etq-row { display: flex; gap: 5px; flex-wrap: wrap; flex: 1; }
+
+/* Chips de etiqueta */
+.etq-chip {
+  display: flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 700; cursor: pointer; border: 2px solid transparent;
+  transition: all 0.15s; font-family: inherit; color: #fff;
+}
+.etq-chip:hover  { opacity: 0.85; transform: scale(1.03); }
+.etq-chip.sel    { border-color: #1D1D1F; box-shadow: 0 0 0 2px rgba(0,0,0,0.15); }
+html.dark .etq-chip.sel { border-color: #fff; }
+
+.add-chip {
+  width: 26px; height: 26px; border-radius: 50%; background: var(--surface2); color: var(--text2);
+  border: 1.5px dashed var(--border); font-size: 16px; font-weight: 300; padding: 0;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: all 0.15s; flex-shrink: 0; font-family: inherit; line-height: 1;
+}
+.add-chip:hover { background: var(--border); color: var(--text); }
+
+.inline-etq-input {
+  background: var(--surface2); border: 1.5px solid #ADCFF7; border-radius: 20px;
+  padding: 3px 10px; font-size: 11px; font-weight: 600; font-family: inherit;
+  color: var(--text); outline: none; width: 90px;
+}
+
+.dash-send-btn {
+  width: 30px; height: 30px; border-radius: 50%; background: var(--text); color: var(--bg);
+  border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all 0.15s;
+}
+.dash-send-btn:hover:not(:disabled) { opacity: 0.8; transform: scale(1.06); }
+.dash-send-btn:disabled { background: var(--surface2); color: var(--text3); cursor: default; }
+
+/* Filtros */
+.filtros { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.f-chip {
+  display: flex; align-items: center; gap: 5px; background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: var(--text2); cursor: pointer; transition: all 0.15s;
+}
+.f-chip:hover { border-color: var(--text3); color: var(--text); }
+.f-chip.active { background: var(--text); border-color: var(--text); color: var(--bg); }
+.f-chip-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.etq-del { margin-left: 4px; font-size: 11px; opacity: 0.6; cursor: pointer; transition: opacity 0.15s; }
+.etq-del:hover { opacity: 1; color: #FF3B30; }
+
+/* Secciones de notas */
+.nota-sec { background: var(--surface); border-radius: 18px; box-shadow: 0 2px 20px rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 10px; }
+.nota-sec-hdr { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--divider); }
+.nota-sec-title { font-size: 10px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* Item de nota */
+.nota-item { display: flex; align-items: flex-start; gap: 0; padding: 13px 16px 13px 0; border-bottom: 1px solid var(--divider); transition: background 0.12s; position: relative; }
+.nota-item:last-child { border-bottom: none; }
+.nota-item:hover { background: var(--surface2); }
+.nota-item.done .nota-txt { color: var(--text3); text-decoration: line-through; }
+
+.nota-color-bar { width: 4px; border-radius: 0 3px 3px 0; flex-shrink: 0; align-self: stretch; min-height: 36px; }
+.nota-inner { display: flex; align-items: flex-start; gap: 11px; flex: 1; padding: 0 12px 0 12px; }
+
+.nota-circle {
+  width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  flex-shrink: 0; margin-top: 2px; transition: all 0.2s;
+}
+.nota-circle:hover { border-color: #0071E3; }
+.nota-circle.checked { background: #34C759; border-color: #34C759; color: white; font-size: 10px; font-weight: 800; }
+
+.nota-body { flex: 1; min-width: 0; }
+.nota-txt  { font-size: 14px; color: var(--text); line-height: 1.45; word-break: break-word; }
+.nota-meta { display: flex; align-items: center; gap: 6px; margin-top: 5px; flex-wrap: wrap; }
+.nota-time { font-size: 10px; color: var(--text3); font-weight: 500; }
+.nota-etq  { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; color: #fff; cursor: pointer; transition: opacity 0.15s; display: inline-flex; align-items: center; gap: 4px; }
+.nota-etq:hover { opacity: 0.82; }
+.nota-etq-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.6); flex-shrink: 0; }
+
+.nota-del { font-size: 12px; color: var(--border); cursor: pointer; padding: 2px 5px; border-radius: 5px; transition: all 0.15s; flex-shrink: 0; user-select: none; margin-top: 2px; }
+.nota-del:hover { color: #FF3B30; background: rgba(255,59,48,0.1); }
+
+.empty-msg { text-align: center; padding: 48px 20px; color: var(--text3); font-size: 13px; line-height: 1.7; }
+
+@keyframes noteSlideIn { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+.nota-item-new { animation: noteSlideIn 0.28s cubic-bezier(0.4,0,0.2,1); }
