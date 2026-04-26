@@ -12,11 +12,28 @@
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "Zumi | Punto de Venta",
         "width": 1024,
         "height": 700,
         "minWidth": 720,
-        "minHeight": 520
+        "minHeight": 520,
+        "decorations": false,
+        "shadow": true
+      },
+      {
+        "label": "bubble",
+        "title": "Zumi",
+        "url": "/?bubble",
+        "width": 110,
+        "height": 110,
+        "decorations": false,
+        "transparent": true,
+        "alwaysOnTop": true,
+        "resizable": false,
+        "skipTaskbar": true,
+        "visible": false,
+        "shadow": false
       }
     ],
     "security": {

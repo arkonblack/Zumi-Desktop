@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { getAllWindows } from '@tauri-apps/api/window';
 import './Ajustes.css';
 import { useUIStore, type Theme, type Modo } from '../../store/uiStore';
 import { useVentasStore } from '../../store/ventasStore';
@@ -31,7 +32,7 @@ function ThemeCard({ id, current, onSelect }: { id: Theme; current: Theme; onSel
 
 /* ─── Componente principal ──────────────────────────────────── */
 export default function Ajustes() {
-  const { theme, modo, userName, setTheme, setModo, setUserName } = useUIStore();
+  const { theme, modo, userName, bubbleEnabled, setTheme, setModo, setUserName, setBubbleEnabled } = useUIStore();
   const { clearVentas } = useVentasStore();
   const { notas, papelera } = useNotasStore();
 
@@ -118,6 +119,28 @@ export default function Ajustes() {
           </div>
         </div>
 
+        {/* ── Burbuja flotante ── */}
+        <div className="aj-card">
+          <p className="aj-card-title">Acceso rápido</p>
+          <p style={{ fontSize: 13, color: 'var(--text2)', marginBottom: 12 }}>
+            Burbuja flotante que abre Zumi desde cualquier ventana
+          </p>
+          <div className="aj-toggle">
+            <button
+              className={`aj-toggle-opt${bubbleEnabled ? ' active' : ''}`}
+              onClick={() => setBubbleEnabled(true)}
+            >
+              Activa
+            </button>
+            <button
+              className={`aj-toggle-opt${!bubbleEnabled ? ' active' : ''}`}
+              onClick={() => setBubbleEnabled(false)}
+            >
+              Desactivada
+            </button>
+          </div>
+        </div>
+
         {/* ── Atajos ── */}
         <div className="aj-card">
           <p className="aj-card-title">Atajos de teclado</p>
@@ -145,6 +168,17 @@ export default function Ajustes() {
         </div>
 
         <p className="aj-version">Zumi v1.0 · Punto de Venta</p>
+
+        <button
+          className="aj-danger-btn"
+          style={{ marginTop: 8 }}
+          onClick={async () => {
+            const wins = await getAllWindows();
+            for (const w of wins) { try { await w.close(); } catch { /* noop */ } }
+          }}
+        >
+          Salir de Zumi
+        </button>
       </div>
 
       {confirm === 'ventas' && (

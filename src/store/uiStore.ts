@@ -5,19 +5,21 @@ export type Theme = 'light' | 'dark' | 'zumi';
 export type Modo  = 'precision' | 'avanzado';
 
 interface UIStore {
-  activeView:  View;
-  sidebarOpen: boolean;
-  theme:       Theme;
-  modo:        Modo;
-  userName:    string;
+  activeView:    View;
+  sidebarOpen:   boolean;
+  theme:         Theme;
+  modo:          Modo;
+  userName:      string;
+  bubbleEnabled: boolean;
 
-  setView:        (v: View)   => void;
-  toggleSidebar:  ()          => void;
-  setSidebarOpen: (o: boolean)=> void;
-  setTheme:       (t: Theme)  => void;
-  setModo:        (m: Modo)   => void;
-  toggleModo:     ()          => void;
-  setUserName:    (n: string) => void;
+  setView:          (v: View)    => void;
+  toggleSidebar:    ()           => void;
+  setSidebarOpen:   (o: boolean) => void;
+  setTheme:         (t: Theme)   => void;
+  setModo:          (m: Modo)    => void;
+  toggleModo:       ()           => void;
+  setUserName:      (n: string)  => void;
+  setBubbleEnabled: (v: boolean) => void;
 }
 
 function applyTheme(t: Theme) {
@@ -29,11 +31,12 @@ const savedTheme = (localStorage.getItem('theme_app') as Theme) || 'light';
 applyTheme(savedTheme);
 
 export const useUIStore = create<UIStore>((set, get) => ({
-  activeView:  'calc',
-  sidebarOpen: localStorage.getItem('sidebar_open') !== 'false',
-  theme:       savedTheme,
-  modo:        (localStorage.getItem('modo_app') as Modo) || 'precision',
-  userName:    localStorage.getItem('user_nombre') || '',
+  activeView:    'calc',
+  sidebarOpen:   localStorage.getItem('sidebar_open') !== 'false',
+  theme:         savedTheme,
+  modo:          (localStorage.getItem('modo_app') as Modo) || 'precision',
+  userName:      localStorage.getItem('user_nombre') || '',
+  bubbleEnabled: localStorage.getItem('bubble_enabled') !== 'false',
 
   setView: (v) => set({ activeView: v }),
 
@@ -72,5 +75,10 @@ export const useUIStore = create<UIStore>((set, get) => ({
   setUserName: (n) => {
     localStorage.setItem('user_nombre', n);
     set({ userName: n });
+  },
+
+  setBubbleEnabled: (v) => {
+    localStorage.setItem('bubble_enabled', String(v));
+    set({ bubbleEnabled: v });
   },
 }));

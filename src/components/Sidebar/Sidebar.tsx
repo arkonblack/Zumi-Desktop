@@ -32,10 +32,9 @@ export default function Sidebar() {
         <div className="s-header">
           <div className="s-logo">
             <div className="s-logo-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={isDark ? '#1D1D1F' : '#FFFFFF'} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-                <line x1="3" y1="6" x2="21" y2="6"/>
-                <path d="M16 10a4 4 0 0 1-8 0"/>
+              <svg width="16" height="14" viewBox="0 0 88 77" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M69 61L41.9686 60.8976L88 0H24.2407L8.55556 20.141L47.5761 20L0 77H52L69 61Z" fill="#0071E3"/>
+                <path d="M72.0091 61L55 77H71L88 61H72.0091Z" fill="#0071E3"/>
               </svg>
             </div>
             <span className="s-logo-text">Zumi</span>

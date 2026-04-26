@@ -1,0 +1,45 @@
+.titlebar {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+
+.titlebar:active {
+  cursor: grabbing;
+}
+
+.titlebar-controls {
+  display: flex;
+  height: 100%;
+  cursor: default;
+}
+
+.titlebar-btn {
+  width: 46px;
+  height: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text3);
+  transition: background 0.15s, color 0.15s;
+}
+
+.titlebar-btn:hover {
+  background: var(--surface2);
+  color: var(--text);
+}
+
+.titlebar-btn.close:hover {
+  background: #FF3B30;
+  color: #fff;
+}
