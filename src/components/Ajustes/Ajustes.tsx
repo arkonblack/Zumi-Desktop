@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { getAllWindows } from '@tauri-apps/api/window';
+import { invoke } from '@tauri-apps/api/core';
 import './Ajustes.css';
 import { useUIStore, type Theme, type Modo } from '../../store/uiStore';
 import { useVentasStore } from '../../store/ventasStore';
@@ -32,7 +32,7 @@ function ThemeCard({ id, current, onSelect }: { id: Theme; current: Theme; onSel
 
 /* ─── Componente principal ──────────────────────────────────── */
 export default function Ajustes() {
-  const { theme, modo, userName, bubbleEnabled, setTheme, setModo, setUserName, setBubbleEnabled } = useUIStore();
+  const { theme, modo, userName, bubbleEnabled, autostart, setTheme, setModo, setUserName, setBubbleEnabled, setAutostart } = useUIStore();
   const { clearVentas } = useVentasStore();
   const { notas, papelera } = useNotasStore();
 
@@ -64,9 +64,10 @@ export default function Ajustes() {
   const totalNotas = notas.length + papelera.length;
 
   const shortcuts: { keys: string[]; desc: string }[] = [
-    { keys: ['N'],     desc: 'Nueva nota rápida' },
-    { keys: ['Enter'], desc: 'Guardar nota / operación' },
-    { keys: ['Esc'],   desc: 'Cerrar modal / limpiar campo' },
+    { keys: ['Ctrl', 'Shift', 'Z'], desc: 'Mostrar/ocultar Zumi (global)' },
+    { keys: ['N'],                  desc: 'Nueva nota rápida' },
+    { keys: ['Enter'],              desc: 'Guardar nota / operación' },
+    { keys: ['Esc'],                desc: 'Cerrar modal / limpiar campo' },
   ];
 
   return (
@@ -141,6 +142,28 @@ export default function Ajustes() {
           </div>
         </div>
 
+        {/* ── Inicio con Windows ── */}
+        <div className="aj-card">
+          <p className="aj-card-title">Inicio con Windows</p>
+          <p style={{ fontSize: 13, color: 'var(--text2)', marginBottom: 12 }}>
+            Abrir Zumi automáticamente al encender el PC (inicia minimizado en la bandeja)
+          </p>
+          <div className="aj-toggle">
+            <button
+              className={`aj-toggle-opt${autostart ? ' active' : ''}`}
+              onClick={() => setAutostart(true)}
+            >
+              Activado
+            </button>
+            <button
+              className={`aj-toggle-opt${!autostart ? ' active' : ''}`}
+              onClick={() => setAutostart(false)}
+            >
+              Desactivado
+            </button>
+          </div>
+        </div>
+
         {/* ── Atajos ── */}
         <div className="aj-card">
           <p className="aj-card-title">Atajos de teclado</p>
@@ -172,10 +195,7 @@ export default function Ajustes() {
         <button
           className="aj-danger-btn"
           style={{ marginTop: 8 }}
-          onClick={async () => {
-            const wins = await getAllWindows();
-            for (const w of wins) { try { await w.close(); } catch { /* noop */ } }
-          }}
+          onClick={() => { invoke('quit_app').catch(() => { /* noop */ }); }}
         >
           Salir de Zumi
         </button>

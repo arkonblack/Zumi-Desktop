@@ -1,17 +1,22 @@
 import { useState, useEffect, useRef } from 'react';
 import { getAllWindows } from '@tauri-apps/api/window';
+import { invoke } from '@tauri-apps/api/core';
+import { register, unregister } from '@tauri-apps/plugin-global-shortcut';
 import './App.css';
 import TitleBar from './components/TitleBar/TitleBar';
 import Sidebar from './components/Sidebar/Sidebar';
 import Calculadora from './components/Calculadora/Calculadora';
-import Notas, { ModalNota } from './components/Notas/Notas';
+import Notas, { ModalNota, ConfirmDialog } from './components/Notas/Notas';
 import Ajustes from './components/Ajustes/Ajustes';
 import { useUIStore } from './store/uiStore';
 import { useNotasStore } from './store/notasStore';
 import { showToast } from './lib/toast';
+import UpdateDialog from './components/Updater/UpdateDialog';
+
+const GLOBAL_SHORTCUT = 'CommandOrControl+Shift+Z';
 
 function App() {
-  const { activeView, bubbleEnabled } = useUIStore();
+  const { activeView, bubbleEnabled, autostartAsked, setAutostart, setAutostartAsked } = useUIStore();
   const { addNota, getColorEtq, etqColores } = useNotasStore();
   const [fabModalOpen, setFabModalOpen] = useState(false);
   const isFirstRender = useRef(true);
@@ -29,6 +34,21 @@ function App() {
     }
     syncBubble();
   }, [bubbleEnabled]);
+
+  useEffect(() => {
+    let registered = false;
+    register(GLOBAL_SHORTCUT, (event) => {
+      if (event.state === 'Pressed') {
+        invoke('toggle_main_window').catch(() => { /* noop */ });
+      }
+    })
+      .then(() => { registered = true; })
+      .catch(() => { /* atajo ya registrado por otra instancia o sin permisos */ });
+
+    return () => {
+      if (registered) unregister(GLOBAL_SHORTCUT).catch(() => { /* noop */ });
+    };
+  }, []);
 
   function handleFabSave(texto: string, etq: string | null) {
     addNota(texto, etq);
@@ -64,6 +84,18 @@ function App() {
           etiquetas={Object.keys(etqColores)}
         />
       )}
+
+      {!autostartAsked && (
+        <ConfirmDialog
+          titulo="¿Abrir Zumi al iniciar Windows?"
+          sub="Zumi se abrirá automáticamente al encender el PC, minimizado en la bandeja del sistema. Puedes cambiar esta opción en cualquier momento desde Ajustes."
+          labelOk="Sí, activar"
+          onOk={() => { setAutostart(true); setAutostartAsked(true); }}
+          onCancel={() => setAutostartAsked(true)}
+        />
+      )}
+
+      <UpdateDialog />
 
       <div id="toast-container" style={{ position: 'fixed', bottom: 28, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, zIndex: 9999, pointerEvents: 'none' }} />
     </>

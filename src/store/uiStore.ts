@@ -1,25 +1,30 @@
 import { create } from 'zustand';
+import { enable as enableAutostart, disable as disableAutostart } from '@tauri-apps/plugin-autostart';
 
 export type View  = 'calc' | 'notas' | 'ajustes';
 export type Theme = 'light' | 'dark' | 'zumi';
 export type Modo  = 'precision' | 'avanzado';
 
 interface UIStore {
-  activeView:    View;
-  sidebarOpen:   boolean;
-  theme:         Theme;
-  modo:          Modo;
-  userName:      string;
-  bubbleEnabled: boolean;
+  activeView:     View;
+  sidebarOpen:    boolean;
+  theme:          Theme;
+  modo:           Modo;
+  userName:       string;
+  bubbleEnabled:  boolean;
+  autostart:      boolean;
+  autostartAsked: boolean;
 
-  setView:          (v: View)    => void;
-  toggleSidebar:    ()           => void;
-  setSidebarOpen:   (o: boolean) => void;
-  setTheme:         (t: Theme)   => void;
-  setModo:          (m: Modo)    => void;
-  toggleModo:       ()           => void;
-  setUserName:      (n: string)  => void;
-  setBubbleEnabled: (v: boolean) => void;
+  setView:           (v: View)    => void;
+  toggleSidebar:     ()           => void;
+  setSidebarOpen:    (o: boolean) => void;
+  setTheme:          (t: Theme)   => void;
+  setModo:           (m: Modo)    => void;
+  toggleModo:        ()           => void;
+  setUserName:       (n: string)  => void;
+  setBubbleEnabled:  (v: boolean) => void;
+  setAutostart:      (v: boolean) => void;
+  setAutostartAsked: (v: boolean) => void;
 }
 
 function applyTheme(t: Theme) {
@@ -31,12 +36,14 @@ const savedTheme = (localStorage.getItem('theme_app') as Theme) || 'light';
 applyTheme(savedTheme);
 
 export const useUIStore = create<UIStore>((set, get) => ({
-  activeView:    'calc',
-  sidebarOpen:   localStorage.getItem('sidebar_open') !== 'false',
-  theme:         savedTheme,
-  modo:          (localStorage.getItem('modo_app') as Modo) || 'precision',
-  userName:      localStorage.getItem('user_nombre') || '',
-  bubbleEnabled: localStorage.getItem('bubble_enabled') !== 'false',
+  activeView:     'calc',
+  sidebarOpen:    localStorage.getItem('sidebar_open') !== 'false',
+  theme:          savedTheme,
+  modo:           (localStorage.getItem('modo_app') as Modo) || 'precision',
+  userName:       localStorage.getItem('user_nombre') || '',
+  bubbleEnabled:  localStorage.getItem('bubble_enabled') !== 'false',
+  autostart:      localStorage.getItem('autostart_enabled') === 'true',
+  autostartAsked: localStorage.getItem('autostart_asked') === 'true',
 
   setView: (v) => set({ activeView: v }),
 
@@ -80,5 +87,16 @@ export const useUIStore = create<UIStore>((set, get) => ({
   setBubbleEnabled: (v) => {
     localStorage.setItem('bubble_enabled', String(v));
     set({ bubbleEnabled: v });
+  },
+
+  setAutostart: (v) => {
+    localStorage.setItem('autostart_enabled', String(v));
+    set({ autostart: v });
+    (v ? enableAutostart() : disableAutostart()).catch(() => { /* noop */ });
+  },
+
+  setAutostartAsked: (v) => {
+    localStorage.setItem('autostart_asked', String(v));
+    set({ autostartAsked: v });
   },
 }));

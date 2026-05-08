@@ -21,6 +21,10 @@
     "core:window:allow-set-position",
     "core:window:allow-set-size",
     "core:window:allow-outer-position",
-    "core:window:allow-scale-factor"
+    "core:window:allow-scale-factor",
+    "autostart:default",
+    "global-shortcut:default",
+    "updater:default",
+    "process:allow-relaunch"
   ]
 }
